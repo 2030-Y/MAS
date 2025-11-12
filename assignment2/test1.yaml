@@ -1,0 +1,59 @@
+world:
+  map: {size: [30, 30], grid_size: 0.05, boundary: true}
+
+robot:
+  - number: 1
+    state: [2.0, 1.0, 0]
+    kinematics: {name: diff}
+    shape: {name: circle, radius: 0.1}
+    vel_min: [0.0, -2.0]
+    vel_max: [1.0,  2.0]
+    color: ['brown']
+    behavior: {name: 'aco_follow_line', role: leader}
+    sensors: [{name: lidar2d, range_min: 0.05, range_max: 6.0, angle_range: 3.1416, number: 181}]
+    plot:
+        show_trajectory: True  
+  
+  - number: 1
+    state: [2.3, 1.0, 0]
+    kinematics: {name: diff}
+    shape: {name: circle, radius: 0.1}
+    vel_min: [0.0, -2.0]
+    vel_max: [1.0,  2.0]
+    color: ['green']
+    behavior: {name: 'aco_follow_line'}
+    sensors: [{name: lidar2d, range_min: 0.05, range_max: 6.0, angle_range: 3.1416, number: 181}]
+
+  - number: 1
+    state: [1.7, 1.0, 0]
+    kinematics: {name: diff}
+    shape: {name: circle, radius: 0.1}
+    vel_min: [0.0, -2.0]
+    vel_max: [1.0,  2.0]
+    color: ['green']
+    behavior: {name: 'aco_follow_line'}
+    sensors: [{name: lidar2d, range_min: 0.05, range_max: 6.0, angle_range: 3.1416, number: 181}]
+
+  - number: 1
+    state: [1.4, 1.0, 0]
+    kinematics: {name: diff}
+    shape: {name: circle, radius: 0.1}
+    vel_min: [0.0, -2.0]
+    vel_max: [1.0,  2.0]
+    color: ['green']
+    behavior: {name: 'aco_follow_line'}
+    sensors: [{name: lidar2d, range_min: 0.05, range_max: 6.0, angle_range: 3.1416, number: 181}]
+
+  - number: 1
+    state: [1.1, 1.0, 0]
+    kinematics: {name: diff}
+    shape: {name: circle, radius: 0.1}
+    vel_min: [0.0, -2.0]
+    vel_max: [1.0,  2.0]
+    color: ['green']
+    behavior: {name: 'aco_follow_line'}
+    sensors: [{name: lidar2d, range_min: 0.05, range_max: 6.0, angle_range: 3.1416, number: 181}]
+
+
+obstacle: []
+
