@@ -146,3 +146,6 @@ The continued failure, even with theoretically better parameters, points to a fu
 Across all tested parameter configurations, the agents have consistently failed to follow the leader's path as intended by the ACO model. This is not a failure of the algorithm's theory but an illustration of its practical challenges. The system is highly sensitive to initial conditions and the interplay between agent speed, evaporation rates, and the strength of the recovery heuristic. For this system to work, the agents must be able to acquire the trail very early in the simulation and be fast enough to never lose it.
 
 
+## Code
+
+Available at https://github.com/Valquaresma03/MAS/tree/main/assignment2
