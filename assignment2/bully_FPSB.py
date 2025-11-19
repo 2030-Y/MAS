@@ -13,7 +13,7 @@ from collision_avoidance import _collision_avoidance_vel
 COMM_TTL = 1.5                                # seconds messages stay valid
 HEARTBEAT_DT = 0.7                            # leader heartbeat period
 ELECTION_TIMEOUT = 1.0                        # time to wait for victory
-AUCTION_ENABLED = False
+AUCTION_ENABLED = True
 EPS = 1e-6                                     # avoid div-by-zero in bids
 CIRCLE_CENTER = (10.0, 10.0)
 CIRCLE_RADIUS = 6.0
@@ -125,6 +125,7 @@ def _begin_election(aid: int, state: AgentState, higher_ids: List[int], election
 
 
 def _handle_bully(ego, N: int, comm_ttl: float, election_timeout: float, heartbeat_dt: float):
+
     # Get id,state,time
     aid = _robot_id(ego)
     st = _st(ego)
@@ -251,7 +252,7 @@ def idx_to_side_rank(idx: Optional[int]):
     side = "right" if (idx % 2 == 0) else "left"
     return side, k
 
-def v_anchor_xy(leader_xyh, side = Side, rank=1, spacing = 0.5,angle_deg = 45.0,back_offset= 0):
+def v_anchor_xy(leader_xyh, side = Side, rank=1, spacing = 0.3,angle_deg = 45.0,back_offset= 0):
 
     xL, yL, th = leader_xyh
     phi = math.radians(angle_deg)
@@ -399,7 +400,8 @@ def beh_diff_bully_fleet(ego_object, objects=None, *args, **kwargs):
         # v, w = _waypoint_ve1(ego_object,x, y, th, V_MAX_STEP, W_MAX_STEP)
         v, w =_circle_vel(x, y, th, V_MAX, W_MAX , CIRCLE_CENTER , CIRCLE_RADIUS)
         v, w = _collision_avoidance_vel(ego_object, v ,w, W_MAX)
-        SPEED = abs(v)                                                    # control follower v
+        SPEED = abs(v)*0.75                                             # control follower v, for 20 agents we have to decrease the agents speed to keep formation to make the leader able to escape the circle
+        # after some tries we decided that with this speed it is possible for the leader to escape the circle and the followers folow it
         return _shape_like_ref([v, w], getattr(ego_object, "vel_min", None))
 
 
