@@ -16,7 +16,7 @@ PH_DEP_L = 50.0                # Leader deposit Δτ^k
 PH_DEP_F = 5.0                  # Follower deposit Δτ^k
 
 # ACO exponents and policy
-ALPHA = 2.5                    # Weight of pheromone τ^α
+ALPHA = 2.5                  # Weight of pheromone τ^α
 BETA = 1.5                    # Weight of heuristic η^β
 Q0 = 0.5                        # Pseudo-greedy prob: with q0 choose argmax, else roulette
 N_DIR = 16                      # Candidate headings for followers (discretisation)
@@ -28,7 +28,7 @@ ETA_W_CLEAR = 1.0               # Clearance from lidar in that direction
 ETA_W_LEADER = 1.1             # Attraction to leader (inverse distance at lookahead point)
 
 # Kinematics
-VN, KW = 0.95, 2.0              # Nominal forward speed scale & turn gain
+VN, KW = 0.75, 1             # Nominal forward speed scale & turn gain
 
 # Spacing (used in simple proximity penalty metric)
 DESIRED_D = 0.5                 # Desired minimum separation between agents

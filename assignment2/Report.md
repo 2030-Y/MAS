@@ -33,9 +33,9 @@ Our solution for the basic task is based on Ant Colony Optimization (ACO), an an
 
 - **Implemented** in:  
     - Basic Implementation
-    [`assignment2/ACO.py`](/Ass2/MAS/assignment2/ACO.py)  
+    [`assignment2/ACO.py`](/ACO.py)  
     - test with:
-      [`assignment2/test1.py`](/Ass2/MAS/assignment2/test1.py)  
+      [`assignment2/test1.py`](/test1.py)  
 
 ---
 
@@ -118,9 +118,9 @@ The results from our baseline test are a direct reflection of the chosen system 
 |--------------------|--------|------------------------------------------------------|
 | `ALPHA`            | `2.5`  | **High** weight for the pheromone trail (`τ`)        |
 | `BETA`             | `1.5`  | **Moderate** weight for the heuristic (`η`)          |
-| `ETA_W_LEADER`     | `1.9`  | **Moderate** weight for leader attraction            |
-| `PH_EVAP`          | `0.97` | Pheromone retention rate per step (1% evaporation)   |
-| `VN` (Follower Speed) | `0.95` | Nominal forward speed scale for follower agents      |
+| `ETA_W_LEADER`     | `1.1`  | **Moderate** weight for leader attraction            |
+| `PH_EVAP`          | `0.99` | Pheromone retention rate per step (1% evaporation)   |
+| `VN` (Follower Speed) | `0.75` | Nominal forward speed scale for follower agents      |
 
 **Observed Results (2000 steps):**
 
@@ -138,7 +138,9 @@ This experiment aimed to fix the issues from the previous tests by creating a mo
 
 **Analysis of system0:**
 The continued failure, even with theoretically better parameters, points to a fundamental initialization or sensitivity problem in the system.
+
 - **Initial State is Critical:** At the beginning of the simulation, the followers start "off the trail." The moderate heuristic was intended to guide them onto it. The fact that they never succeeded suggests that by the time they get close, the original pheromone trail has already evaporated too much to be detected strongly.
+
 - **System:** This demonstrates the fragility of a purely pheromone-based system. It relies on agents staying in continuous contact with the trail. If contact is ever broken (due to speed differences, obstacles, or poor initial position), the agent may not have a robust enough mechanism to recover and find the trail again.
 
 
@@ -154,16 +156,15 @@ This system uses two well-known distributed algorithms.
 
 - **Implemented** in:  
     - Basic Implementation
-    [`assignment2/ACO.py`](/Ass2/MAS/assignment2/bully_FPSB.py)  
+    [`assignment2/bully_FPSB.py`](bully_FPSB.py)  
     - test with:
-      [`assignment2/test1.py`](/Ass2/MAS/assignment2/test_bully.py)  
+      [`assignment2/test_bully.py`](/test_bully.py)  
 
 - **Leader Election (Bully Algorithm):**
   - **Goal:** To ensure the agent with the highest ID always becomes the leader, and to elect a new leader if the current one fails.
 
   - **Mechanism:** If an agent detects the leader is missing (no `HEARTBEAT` messages), it initiates an election by messaging all agents with higher IDs. If it receives no reply, it declares itself the new leader via a `VICTORY` broadcast. If a higher-ID agent responds, that agent takes over the election process. This guarantees a deterministic leader without a central authority.
 
-- The agents follow the leader in a V-formation
 
 - **Position Coordination (First-Price Sealed-Bid Auction):**
   - **Goal:** To have follower agents decide which position in a V-formation to take.
