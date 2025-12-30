@@ -30,6 +30,25 @@ REWARD_PATCHES = [              # Predefined reward “patches” (center_x, cen
     ( 8.0,  2.0,  6.0),
     ( 9.0,  1.0,  4.0),
 ]
+
+import random
+
+# ... [Your existing REWARD_PATCHES defined near the top]
+ORIGINAL_REWARD_PATCHES = list(REWARD_PATCHES)  # Store original for reference
+
+def set_reward_patches(n=None, indices=None):
+    """
+    Set the global REWARD_PATCHES list to a random subset of `n` patches,
+    or to specified indices. Reset the collected set.
+    """
+    global REWARD_PATCHES, GLOBAL_COLLECTED_REWARDS
+    if indices is not None:
+        REWARD_PATCHES = [ORIGINAL_REWARD_PATCHES[i] for i in indices]
+    elif n is not None:
+        REWARD_PATCHES = random.sample(ORIGINAL_REWARD_PATCHES, int(0.8*n))
+    else:
+        REWARD_PATCHES = list(ORIGINAL_REWARD_PATCHES)
+    GLOBAL_COLLECTED_REWARDS = set()
 ACTIONS = [                 # Action set: (v, w) pairs
     (0.35,  0.0),           # forward
     (0.20,  1.2),           # forward + left
@@ -51,6 +70,8 @@ GLOBAL_COLLECTED_REWARDS = set()
 
 def all_rewards_collected():
     return len(GLOBAL_COLLECTED_REWARDS) >= len(REWARD_PATCHES)
+
+
 
 # -------------------- Helper functions --------------------
 def _pose(ego):
