@@ -6,16 +6,15 @@ world:
   boundary: true
 
 robot:
-  - number: 20
+  - number: 10
     distribution: {name: 'circle', radius: 6, center: [6, 6]}
     kinematics: {name: diff}
     shape: {name: circle, radius: 0.1}
     vel_min: [0.0, -2.0]
-    vel_max: [1.0,  3.5]
+    vel_max: [1.0,  2.0]
     behavior: {name: 'RM', N: 5 }
     sensors: [{name: lidar2d, range_min: 0.05, range_max: 6.0, angle_range: 3.1416, number: 181}]
     plot:
         show_trajectory: True  
         show_sensor: False 
 obstacle: []
-
