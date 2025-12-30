@@ -9,7 +9,7 @@ from collision_avoidance import _collision_avoidance_vel
 
 # -------------------- Global parameters --------------------
 GRID_SIZE = 0.5                 # meters per cell
-COLLECT_RADIUS = 0.3            # radius to collect reward patch
+COLLECT_RADIUS = 0.4           # radius to collect reward patch
 STEP_PENALTY = 0.01             # living cost per step
 REWARD_PATCHES = [              # Predefined reward “patches” (center_x, center_y, reward_value)
     ( 1.0,  1.0,  5.0),
@@ -39,6 +39,12 @@ ACTIONS = [                 # Action set: (v, w) pairs
 ]
 NA=len(ACTIONS)
 RM_MEMORY = {}              # Global RM memory 
+
+EPS_INIT = 0.3
+EPS_MIN = 0.05
+EPS_DECAY_STEPS = 800  # or the number of steps you want to decay over
+
+
 
 # Global tracker for all collected rewards (module-level singleton)
 GLOBAL_COLLECTED_REWARDS = set()
@@ -91,6 +97,14 @@ def reward_computation(ego_object, mem):
     dmin = dist_to_nearest_reward(x, y, mem)
     if dmin >= 0 and mem["prev_dmin"] is not None:
         r += 0.2 * (mem["prev_dmin"] - dmin)
+
+    # Penalty for staying still or turning on spot repeatedly (detect via last action)
+    if "last_sa" in mem and mem["last_sa"] is not None:
+        _s, a_id = mem["last_sa"]
+        v, w = ACTIONS[a_id]
+        if abs(v) < 0.05:  # Not moving forward
+            r -= 0.01  # Small penalty for excessive rotation/camping
+                    
     mem["prev_dmin"] = dmin
     collect_now = False
 
@@ -121,8 +135,12 @@ def update_regrets(mem, s_prev, a_prev, r):
 def choose_new_action(ego_object, mem):
     x, y, th = _pose(ego_object)
     s = state_key_from_xy(x, y)
-    EPS = 0.10  # exploration probability
-    if random.random() < EPS:
+
+    # Decaying exploration (epsilon-greedy)
+    step = mem["metrics"].get("t", 0) if "metrics" in mem else 0
+    eps = EPS_MIN + (EPS_INIT - EPS_MIN) * max(0, (EPS_DECAY_STEPS - step)) / EPS_DECAY_STEPS
+
+    if random.random() < eps:
         a = random.randrange(NA)
         mem["last_sa"] = (s, a)
         v, w = ACTIONS[a]

@@ -11,7 +11,7 @@ robot:
     kinematics: {name: diff}
     shape: {name: circle, radius: 0.1}
     vel_min: [0.0, -2.0]
-    vel_max: [1.0,  2.0]
+    vel_max: [1.0,  3.5]
     behavior: {name: 'RM', N: 5 }
     sensors: [{name: lidar2d, range_min: 0.05, range_max: 6.0, angle_range: 3.1416, number: 181}]
     plot:
