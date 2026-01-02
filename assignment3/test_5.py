@@ -7,16 +7,10 @@ RESULTS_DIR = "results_5agents"
 os.makedirs(RESULTS_DIR, exist_ok=True)  # Create if needed
 os.chdir(RESULTS_DIR)  # Change working directory to results folder
 
-
-AGENT_COUNT = 5           # <--- change as needed per experiment
-REWARDS_PER_AGENT = 0.9      # <--- scaling factor
-total_rewards = int(AGENT_COUNT * REWARDS_PER_AGENT)
-
-# Generate grid or random reward patches
 import random
 
 
-AGENT_COUNT = 5  # or 10 for 10 agents
+AGENT_COUNT = 5  
 
 # Set a consistent random seed for reproducibility (optional)
 random.seed(42)

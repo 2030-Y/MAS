@@ -1,6 +1,11 @@
 import irsim
 import rm
+from rm import set_reward_patches, all_rewards_collected
+import os
 
+RESULTS_DIR = "results_20agents"
+os.makedirs(RESULTS_DIR, exist_ok=True)  # Create if needed
+os.chdir(RESULTS_DIR)  # Change working directory to results folder
 env = irsim.make("test.yaml")
 env.load_behavior("rm")
 
