@@ -12,10 +12,10 @@ import random
 
 AGENT_COUNT = 5  
 
-# Set a consistent random seed for reproducibility (optional)
+# random seed for reproducibility
 random.seed(42)
 
-# Set 5/10 unique rewards, chosen from the original list (from rm.py)
+# Set 5 unique rewards, chosen from the original list (from rm.py)
 set_reward_patches(n=AGENT_COUNT)
 
 

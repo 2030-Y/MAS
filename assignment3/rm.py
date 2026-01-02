@@ -33,7 +33,6 @@ REWARD_PATCHES = [              # Predefined reward “patches” (center_x, cen
 
 import random
 
-# ... [Your existing REWARD_PATCHES defined near the top]
 ORIGINAL_REWARD_PATCHES = list(REWARD_PATCHES)  # Store original for reference
 
 def set_reward_patches(n=None, indices=None):
@@ -61,7 +60,7 @@ RM_MEMORY = {}              # Global RM memory
 
 EPS_INIT = 0.3
 EPS_MIN = 0.05
-EPS_DECAY_STEPS = 800  # or the number of steps you want to decay over
+EPS_DECAY_STEPS = 800  # over how many steps to decay epsilon
 
 
 
@@ -119,7 +118,7 @@ def reward_computation(ego_object, mem):
     if dmin >= 0 and mem["prev_dmin"] is not None:
         r += 0.2 * (mem["prev_dmin"] - dmin)
 
-    # Penalty for staying still or turning on spot repeatedly (detect via last action)
+    # Penalty for staying still or turning on spot repeatedly 
     if "last_sa" in mem and mem["last_sa"] is not None:
         _s, a_id = mem["last_sa"]
         v, w = ACTIONS[a_id]

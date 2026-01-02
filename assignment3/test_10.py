@@ -8,16 +8,15 @@ os.makedirs(RESULTS_DIR, exist_ok=True)  # Create if needed
 os.chdir(RESULTS_DIR)  # Change working directory to results folder
 
 
-# Generate grid or random reward patches
 import random
 
 
 AGENT_COUNT = 10  
 
-# Set a consistent random seed for reproducibility (optional)
+# random seed for reproducibility
 random.seed(42)
 
-# Set 5/10 unique rewards, chosen from the original list (from rm.py)
+# Set 10 unique rewards, chosen from the original list (from rm.py)
 set_reward_patches(n=AGENT_COUNT)
 
 env = irsim.make("test_10.yaml")
