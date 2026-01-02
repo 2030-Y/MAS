@@ -40,12 +40,10 @@ def read_metrics_csv(path: str):
             cols["regret_max"].append(float(row.get("regret_max")))
             cols["action_dist"].append(ast.literal_eval(row.get("action_dist")))
 
-
     if cols["t"]:
         order = sorted(range(len(cols["t"])), key=lambda i: (cols["t"][i] is None, cols["t"][i]))
         for k in list(cols.keys()):
             cols[k] = [cols[k][i] for i in order]
-
 
     max_len = 0
     for v in cols["action_dist"]:
@@ -84,7 +82,6 @@ def mean_std_ignore_none(values):
 
 
 def build_mean_std_series(agent_data, field):
-
     t = next(iter(agent_data.values()))["t"]
     mean_list, std_list = [], []
 
@@ -147,7 +144,9 @@ def plot_mean_std(agent_data, field, title, ylabel, outpath):
     plt.title(title)
     plt.xlabel("t")
     plt.ylabel(ylabel)
-    plt.legend()
+    handles, labels = plt.gca().get_legend_handles_labels()
+    if labels:
+        plt.legend()
     plt.tight_layout()
     plt.savefig(outpath, dpi=200)
     plt.close()
@@ -172,7 +171,9 @@ def plot_topk_compare(agent_data, field, title, ylabel, outpath, k=5, faint_alph
     plt.title(title)
     plt.xlabel("t")
     plt.ylabel(ylabel)
-    plt.legend()
+    handles, labels = plt.gca().get_legend_handles_labels()
+    if labels:
+        plt.legend()
     plt.tight_layout()
     plt.savefig(outpath, dpi=200)
     plt.close()
@@ -193,7 +194,6 @@ def run_all_plots(agent_data, outdir_mean_std, outdir_top5):
     os.makedirs(outdir_mean_std, exist_ok=True)
     os.makedirs(outdir_top5, exist_ok=True)
 
-
     scalar_fields = [
         ("episode_return", "Episode return", "episode_return"),
         ("ema_return", "EMA return", "ema_return"),
@@ -206,17 +206,20 @@ def run_all_plots(agent_data, outdir_mean_std, outdir_top5):
 
     for field, title, ylabel in scalar_fields:
         plot_mean_std(
-            agent_data, field,
-            f"{title} (mean ± std over agents)", ylabel,
+            agent_data,
+            field,
+            f"{title} (mean ± std over agents)",
+            ylabel,
             os.path.join(outdir_mean_std, f"{field}_mean_std.png"),
         )
         plot_topk_compare(
-            agent_data, field,
-            f"{title} (Top-5 agents highlighted)", ylabel,
+            agent_data,
+            field,
+            f"{title} (Top-5 agents highlighted)",
+            ylabel,
             os.path.join(outdir_top5, f"{field}_top5.png"),
-            k=5
+            k=5,
         )
-
 
     action_names = ["forward", "fwd_left", "fwd_right", "rot_left", "rot_right"]
     max_idx = find_max_action_index(agent_data)
@@ -226,39 +229,41 @@ def run_all_plots(agent_data, outdir_mean_std, outdir_top5):
             name = action_names[i] if i < len(action_names) else field
 
             plot_mean_std(
-                agent_data, field,
-                f"Action prob: {name} (mean ± std over agents)", "probability",
+                agent_data,
+                field,
+                f"Action prob: {name} (mean ± std over agents)",
+                "probability",
                 os.path.join(outdir_mean_std, f"action_{name}_mean_std.png"),
             )
             plot_topk_compare(
-                agent_data, field,
-                f"Action prob: {name} (Top-5 agents highlighted)", "probability",
-                os.path.join(outdir_top5, f"action_{name}_top5.png"),
-                k=5
+                agent_data,
+                field,
+                f"Action prob: {name} (Top-5 agents highlighted)",
+                "probability",
+                os.path.join(outdir_top5, f"{field}_top5.png"),
+                k=5,
             )
 
 
 def main():
-    files = sorted(glob.glob("rm_metrics_agent_*.csv"))
+    runs = ["results_5agents", "results_10agents", "results_20agents"]
+    for base in runs:
+        files = sorted(glob.glob(os.path.join(base, "rm_metrics_agent_*.csv")))
+        if not files:
+            print(f"Skip {base}: no CSVs found")
+            continue
 
-    agent_data = {}
-    for f in files:
-        cols = read_metrics_csv(f)
-        aid = None
-        if cols.get("agent_id") and cols["agent_id"] and cols["agent_id"][0] is not None:
-            aid = cols["agent_id"][0]
-        else:
-            aid = os.path.splitext(os.path.basename(f))[0]
-        agent_data[aid] = cols
+        agent_data = {}
+        for f in files:
+            cols = read_metrics_csv(f)
+            aid = cols["agent_id"][0] if cols.get("agent_id") and cols["agent_id"] else os.path.splitext(os.path.basename(f))[0]
+            agent_data[aid] = cols
 
-    outdir = "plots"
-    out_mean_std = os.path.join(outdir, "mean_std")
-    out_top5 = os.path.join(outdir, "top5")
-
-    run_all_plots(agent_data, out_mean_std, out_top5)
-
-    print(f"Done. Mean±std saved to: {out_mean_std}/")
-    print(f"Done. Top-5 saved to: {out_top5}/")
+        outdir = os.path.join(base, "plots")
+        out_mean_std = os.path.join(outdir, "mean_std")
+        out_top5 = os.path.join(outdir, "top5")
+        run_all_plots(agent_data, out_mean_std, out_top5)
+        print(f"[{base}] Done. Mean±std: {out_mean_std}/ ; Top-5: {out_top5}/")
 
 
 if __name__ == "__main__":
