@@ -67,9 +67,6 @@ We selected **Task B**: implement and study a MARL technique (Regret Matching) i
 - Fraction of rewards collected; time to full clearance
 - Action distribution; regret statistics
 
-- Fitness (weighted sum):
-    - \( F = \alpha \cdot \text{mean collected} + (1-\alpha)\cdot \text{mean return},\; \alpha \in [0,1] \)
-
 ### Runs (representative, latest code)
 - 5 agents: 4 patches; ε-decay on; `vel_max=[1.0, 2.0]`.
 - 10 agents: 8 patches; ε-decay on; `vel_max=[1.0, 2.0]`.
@@ -128,7 +125,6 @@ We selected **Task B**: implement and study a MARL technique (Regret Matching) i
 
 ### Parameter Effects
 - **ε-decay:** High initial ε accelerates discovery; too-early low ε risks stalls.  
-- **α (fitness):** α→0 favors speed; α→1 favors total return; sweet spot ~0.3–0.6 balances speed/fairness.  
 - **Vel_max / COLLECT_RADIUS:** Slightly higher values can help both dense and small teams; tune per scenario.
 
 ### Behavioral Observations
@@ -159,7 +155,7 @@ We selected **Task B**: implement and study a MARL technique (Regret Matching) i
 - ε-decay and α sweeps expose clear trade-offs between speed, fairness, and total return.
 - Scaling: congestion at 20 agents is manageable; at 5 agents, exploration dominates—tune ε and speed/radius accordingly.
 - Limitations: no explicit coordination/role assignment; sensitivity to initial seeding; potential congestion on very tight maps.
-- Future work: heterogeneous ε/α per agent, lightweight signaling or region auctioning, adaptive state abstraction (clustering).
+- Future work: heterogeneous ε per agent, lightweight signaling or region auctioning, adaptive state abstraction (clustering).
 
 ---
 
@@ -167,7 +163,7 @@ We selected **Task B**: implement and study a MARL technique (Regret Matching) i
 
 - **Regret Matching + TTC collision avoidance** delivers fast, fair, and scalable foraging in LBF.
 - Code fixes (global ledger), ε-decay, and shaping markedly improved convergence and fairness.
-- Systematic parameter sweeps (ε, α, agent count) provided insight and reproducibility for the assignment goals.
+- Systematic parameter sweeps (ε, agent count) provided insight and reproducibility for the assignment goals.
 
 ---
 
@@ -179,10 +175,3 @@ We selected **Task B**: implement and study a MARL technique (Regret Matching) i
 - **Configs:** `test.yaml`, `test_5.yaml`, `test_10.yaml`
 - **Drivers:** `test.py`, `test_5.py`, `test_10.py`
 
----
-
-## Appendix: Run Notes & Tips
-
-- For **5 agents**: keep ε higher longer (e.g., decay over 1200–1500 steps), consider COLLECT_RADIUS 0.45 and vel_max ~2.3; ensure subset of patches is preselected via `set_reward_patches`.
-- For **10 agents**: current settings are a good balance; minor radius/speed boosts can help if map coverage lags.
-- For **20 agents**: higher vel_max (3.5) works with TTC; ensure escape-turn thresholds remain conservative.
