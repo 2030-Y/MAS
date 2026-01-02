@@ -90,6 +90,8 @@ We selected **Task B**: implement and study a MARL technique (Regret Matching) i
 ### 5‑Agent Results (0.8× patches from canonical list)
 [Results (5 agents)](https://github.com/Valquaresma03/MAS/tree/main/results_5agents)
 
+[Plots (5 agents)](https://github.com/Valquaresma03/MAS/tree/main/results_5agents/plots)
+
 - **Outcome:** All 4 patches collected; early stop at **step 2237** (`Collected: 4/4`).  
 
 - **Behavior:** Travel-heavy early phase; action mix ~30% forward, ~25% arcs, ~15% turns. No duplicate collections; TTC prevents stalls.  
@@ -99,6 +101,9 @@ We selected **Task B**: implement and study a MARL technique (Regret Matching) i
 ### 10‑Agent Results (0.8× patches from canonical list)
 [Results (10 agents)](https://github.com/Valquaresma03/MAS/tree/main/results_10agents)
 
+[Plots (10 agents)](https://github.com/Valquaresma03/MAS/tree/main/results_10agents/plots)
+
+
 - **Outcome:** All 8 patches collected; early stop at **step 1959** (`Collected: 8/8`). 
 - **Behavior:** 4/10 agents collected (2, 6, 7, 9); the others never picked up. Policy settles on forward/arcs; pure rotations ~7–11%.
 - **Collections:** Few pickup events concentrated in those 4 agents; returns spike at pickups and stay negative for the rest. `dmin` drops near pickups then rises; non-collectors see `dmin` grow steadily.
@@ -106,6 +111,8 @@ We selected **Task B**: implement and study a MARL technique (Regret Matching) i
 
 ### 20‑Agent Results (17 patches, full list)
 [Results (20 agents)](https://github.com/Valquaresma03/MAS/tree/main/results_20agents)
+
+[Plots (20 agents)](https://github.com/Valquaresma03/MAS/tree/main/results_20agents/plots)
 
 - **Outcome:** All 17 patches collected; early stop at **step 1365** (`Collected: 17/17`).  
 - **Behavior:** Highest throughput; low `since_last_collect`; congestion managed by TTC + escape turns. Multiple agents collected (e.g., agents 1, 3, 4, 6, 8, 9, 11, 12, 14, 15 picked up at least one patch), while a few remained non-collectors but still contributed to coverage and blocking avoidance.  
@@ -142,7 +149,7 @@ We selected **Task B**: implement and study a MARL technique (Regret Matching) i
 - Outputs are saved per run under `results_*/plots/mean_std/` and `results_*/plots/top5/`.
 
 ## The 20‑agent run gives the clearest visuals; link for reference: 
-  [Plots (20 agents)](faltaaaaaaaaaaaaaa)
+  [Plots (20 agents)](https://github.com/Valquaresma03/MAS/tree/main/results_20agents/plots)
 
 ---
 
